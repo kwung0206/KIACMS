@@ -1,225 +1,195 @@
 # KIACMS
 
-KIACMS (Korea IT Academy Class Management System) is an AI-powered class management platform designed for real educational operations rather than a generic LMS.
+KIACMS(Korea IT Academy Class Management System)는 교육 운영 현장에서 바로 사용할 수 있도록 설계한 AI 기반 수업 관리 플랫폼입니다.  
+단순 LMS가 아니라 학생, 강사, 멘토, Root 관리자를 하나의 서비스로 연결해 수업 일정, 정리글, 프로젝트 모집, 알림, AI 도우미까지 함께 제공합니다.
 
-This repository is organized as a monorepo with:
+## 프로젝트 구성
 
-- `backend/`: Spring Boot API server
-- `frontend/`: React + Vite web client
-- `infra/`: local infrastructure such as PostgreSQL for development
-- `docs/`: architecture and implementation notes
+- `backend/` : Spring Boot 백엔드 API
+- `frontend/` : React + Vite 프론트엔드
+- `infra/` : 로컬 개발용 PostgreSQL 등 인프라 설정
+- `docs/` : 아키텍처/설계 문서
+- `scripts/` : 샘플 데이터 및 보조 스크립트
 
-## Step 1 Output
+## 현재 구현 요약
 
-Step 1 establishes the implementation-ready architecture for the project:
+### 공통
 
-- overall system architecture
-- backend and frontend directory structure
-- domain decomposition
-- core entity relationship design
-- security baseline and implementation principles
+- 로그인 / 회원가입 / 승인 대기 흐름
+- 역할 기반 라우팅 및 접근 제어
+- 알림 조회 / 읽음 / 삭제
+- 상단 AI 도우미 챗봇
+- 마이페이지
 
-See [docs/architecture/step-01-system-architecture.md](docs/architecture/step-01-system-architecture.md).
+### 학생
 
-## Step 2 Output
+- 수업 캘린더 조회
+- 내 노트 목록 / 작성 / 수정 / 상세
+- 노트 캘린더에서 수업 일정 함께 표시
+- 날짜 클릭 시 노트 작성으로 이동
+  - 수업이 있으면 수업 선택 모달 표시
+  - 수업이 없으면 바로 작성 화면 이동
+  - 선택한 수업의 `courseId`, `courseSessionId` 자동 입력
+- 프로젝트 목록 / 상세 / 모집글 작성 / 내 지원 현황
 
-Step 2 defines the PostgreSQL ERD and generates the initial Spring Boot JPA entity layer.
+### 강사
 
-- detailed table and enum design
-- relationship and constraint proposal
-- initial backend entity code under `backend/src/main/java/com/kiacms`
+- 담당 회차 조회
+- 태그된 노트 목록 / 상세
+- 노트 코멘트 작성
 
-See [docs/architecture/step-02-erd-and-entities.md](docs/architecture/step-02-erd-and-entities.md).
+### 멘토
 
-## Step 3 Output
+- 담당 학생 관리
+- 학생 선택 모달
+- 학생-수업 매핑
 
-Step 3 makes the backend project runnable with shared runtime foundations.
+### Root
 
-- Spring Boot backend bootstrap structure
-- common API response format
-- global exception handling
-- repository skeletons
-- health check endpoint
-- local and test configuration examples
+- 승인 관리
+- 수업 일정 관리
+- 프로젝트 관리
 
-See [docs/architecture/step-03-backend-bootstrap.md](docs/architecture/step-03-backend-bootstrap.md).
+## 기술 스택
 
-## Planned Delivery Order
+- Backend: Spring Boot, Spring Security, Spring Data JPA
+- Frontend: React, Vite, React Router
+- Database: PostgreSQL
+- AI: OpenAI API
 
-1. Step 1: architecture and project structure
-2. Step 2: DB entity and ERD design
-3. Step 3: Spring Boot project initialization
-4. Step 4: authentication, authorization, and approval flow
-5. Step 5: course, session, and calendar features
-6. Step 6: notes, tags, and comments
-7. Step 7: project recruiting and applications
-8. Step 8: notifications
-9. Step 9: AI features
-10. Step 10: React frontend integration
-11. Step 11: security review and refactoring
-12. Step 12: README and run guide
+## 빠른 실행 방법
 
-## Local Infrastructure
+### 1. DB 실행
 
-The repository already includes a local PostgreSQL compose file for development.
-
-1. Copy `.env.example` to `.env`.
-2. Start PostgreSQL:
+`.env.example`을 `.env`로 복사한 뒤 실행합니다.
 
 ```powershell
 docker compose -f infra/docker-compose.yml --env-file .env up -d
 ```
 
-3. Stop PostgreSQL:
+중지:
 
 ```powershell
 docker compose -f infra/docker-compose.yml --env-file .env down
 ```
 
-## Frontend Run Guide
+### 2. 백엔드 실행
 
-The React client lives in `frontend/` and is built with Vite + React Router.
+```powershell
+cd backend
+.\gradlew.bat bootRun
+```
 
-### 1. Install
+기본 포트:
+
+- `http://localhost:8085`
+
+### 3. 프론트엔드 실행
 
 ```powershell
 cd frontend
 npm install
-```
-
-### 2. Environment Variables
-
-Create `frontend/.env` from `frontend/.env.example`.
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Default example:
-
-```env
-VITE_API_BASE_URL=http://localhost:8080
-```
-
-### 3. Run in Development
-
-```powershell
-cd frontend
 npm run dev
 ```
 
-The default Vite dev server runs on `http://localhost:5173`.
+기본 포트:
 
-### 4. Production Build
+- `http://localhost:5173`
 
-```powershell
-cd frontend
-npm run build
+## 프론트 환경변수
+
+`frontend/.env` 파일 예시:
+
+```env
+VITE_API_BASE_URL=http://localhost:8085
 ```
 
-Optional preview:
+## 백엔드 주요 환경변수
 
-```powershell
-cd frontend
-npm run preview -- --host
+예시:
+
+```env
+KIACMS_SERVER_PORT=8085
+KIACMS_DB_HOST=localhost
+KIACMS_DB_PORT=5432
+KIACMS_DB_NAME=kiacmsdb
+KIACMS_DB_USER=postgres
+KIACMS_DB_PASSWORD=your-password
+OPENAI_API_KEY=your-openai-key
 ```
 
-## Frontend Integration Notes
+주의:
 
-### Authentication
+- `OPENAI_API_KEY`는 절대 프론트엔드에 넣지 않습니다.
+- 실제 운영용 비밀번호나 키는 저장소에 커밋하지 않습니다.
 
-- Login API: `POST /api/auth/login`
-- Signup API: `POST /api/auth/signup`
-- The access token returned from login is stored in `localStorage` under `kiacms.accessToken`.
-- The current user snapshot is stored in `localStorage` under `kiacms.user`.
-- Pending signup information is stored in `sessionStorage` under `kiacms.pendingSignup`.
+## 테스트용 샘플 계정
 
-### Authorization Header Injection
-
-The shared client is implemented in `frontend/src/api/http.js`.
-
-- `request()` reads the access token from local storage.
-- When a token exists, it injects `Authorization: Bearer <token>`.
-- Public endpoints such as login and signup call the client with `auth: false`.
-
-### 401 Handling
-
-- On `401`, the client clears the saved token and cached user.
-- It dispatches the `kiacms:unauthorized` browser event.
-- `AuthContext` listens for that event and logs the user out cleanly.
-- Protected pages then route back through the existing auth guard flow.
-
-## Current Frontend Scope
-
-### Common
-
-- Login / signup / pending approval
-- Role-based routing and home redirects
-- App shell with sidebar, topbar, notification dropdown, and theme toggle
-- Shared API client, auth context, theme context, and route guards
-
-### Student
-
-- Dashboard
-- Course calendar
-- Session detail
-- Note list / create / detail / edit
-- Project recruiting post create
-- My recruiting posts
-- My project applications
-
-### Instructor
-
-- Dashboard
-- Assigned session management
-- Tagged note list and detail
-- Mentor application status
-
-### Mentor
-
-- Dashboard
-- Mentor application status
+아래 계정은 빠른 기능 테스트용입니다.
 
 ### Root
 
-- Dashboard
-- Root course/admin placeholder screen
+- 아이디: `root@kiacms.local`
+- 비밀번호: `Test1234!`
 
-## Known Gaps / TODO
+### 학생
 
-These items are intentionally shown in the frontend as placeholders, disabled actions, or TODO cards because matching backend APIs are not available yet.
+- 아이디: `student@kiacms.local`
+- 비밀번호: `Test1234!`
 
-- My page update APIs are missing:
-  - profile update
-  - password change
-  - account withdrawal
-- Root detailed operation APIs are limited:
-  - richer approval analytics
-  - course/session aggregate metrics
-  - 운영 로그/감사 로그 대시보드
-- Mentor-specific student management APIs are missing:
-  - managed student list
-  - mentee course progress summary
-  - mentee note/project participation summary
-- Instructor tag UX has a backend constraint:
-  - note creation supports `taggedInstructorIds`
-  - note edit does not support tag removal or replacement
-  - there is no instructor search API yet, so create/edit uses a minimal input flow
-- Project management is currently read/create/decision oriented:
-  - no project post edit API
-  - no project post delete/close API from the frontend
-- Notification target URLs depend on backend-provided `targetUrl`; if a backend event does not provide one, the frontend falls back to the notifications page.
+### 멘토
 
-## Suggested Next Priorities
+- 아이디: `mentor@kiacms.local`
+- 비밀번호: `Test1234!`
 
-1. Add user self-service APIs for profile update, password change, and withdrawal.
-2. Add mentor management APIs for assigned students and learning summaries.
-3. Add richer root dashboards for approvals, courses, sessions, and audit signals.
-4. Add instructor search/select API so note tagging can move from manual input to searchable UX.
-5. Add project post edit/close APIs and align PM management UI with those actions.
-6. Add pagination and search for notifications, notes, and project lists.
+### 강사
 
-## Notes
+- 아이디: `teacher@kiacms.local`
+- 비밀번호: `Test1234!`
 
-- Do not commit real API keys or passwords.
-- Notion integration is intentionally deferred to a secure interface-first design.
+추가 샘플 학생 계정도 존재합니다.
+
+- 예시: `seed.student01@kiacms.local`
+- 비밀번호: `Test1234!`
+
+## 샘플 데이터
+
+현재 샘플 데이터에는 다음이 포함됩니다.
+
+- 학생 30명
+- 강사 5명
+- 프로젝트 3개
+- 과정 및 회차 데이터
+- 프로젝트 지원서 / 멘토 매핑 / 알림 일부 샘플
+
+샘플 데이터 정리 스크립트:
+
+- [cleanup_malformed_demo_data.py](C:/Users/kgj01/Documents/KIACMS/scripts/cleanup_malformed_demo_data.py)
+
+## 인증 동작 방식
+
+- 로그인 성공 시 access token을 `localStorage`에 저장
+- API 호출 시 `Authorization: Bearer <token>` 자동 주입
+- `401` 발생 시 저장된 인증 정보 제거 후 로그인 흐름으로 복귀
+
+## 현재 확인된 주요 기능
+
+- 학생 노트 캘린더와 수업 일정 통합 표시
+- 멘토 학생 선택 모달
+- 프로젝트 게시판 / 상세 / 지원 흐름
+- 알림 삭제
+- AI 도우미 기본 동작
+
+## 남은 개선 포인트
+
+- 프로젝트/운영 화면의 추가 한글화 정리
+- Root/멘토 운영 대시보드 고도화
+- 노트 작성 시 강사 검색형 태그 UX 추가
+- 프로젝트 수정/삭제/마감 제어 고도화
+- 사용자 정보 수정 API 및 화면 확장
+
+## 문서
+
+- [1단계 아키텍처 문서](docs/architecture/step-01-system-architecture.md)
+- [2단계 ERD 및 엔티티 문서](docs/architecture/step-02-erd-and-entities.md)
+- [3단계 백엔드 초기 구조 문서](docs/architecture/step-03-backend-bootstrap.md)
