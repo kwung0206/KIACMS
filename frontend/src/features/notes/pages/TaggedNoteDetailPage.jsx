@@ -40,7 +40,7 @@ export default function TaggedNoteDetailPage() {
       const response = await createTaggedNoteComment(noteId, comment);
       setNote(response);
       setComment("");
-      setMessage("Comment saved.");
+      setMessage("코멘트가 저장되었습니다.");
     } catch (error) {
       setMessage(error.message);
     } finally {
@@ -49,7 +49,7 @@ export default function TaggedNoteDetailPage() {
   }
 
   if (loading) {
-    return <LoadingScreen message="Loading tagged note." />;
+    return <LoadingScreen message="태그된 노트를 불러오는 중입니다." />;
   }
 
   return (
@@ -59,30 +59,30 @@ export default function TaggedNoteDetailPage() {
         description={`${note.authorName} | ${note.courseTitle}`}
         actions={
           <Link className="ghost-button button-small" to="/instructor/tagged-notes">
-            Back to list
+            목록으로
           </Link>
         }
       />
 
       <section className="detail-grid">
         <article className="panel">
-          <h2>Student note</h2>
+          <h2>학생 정리글</h2>
           <div className="info-card">
-            <strong>Session info</strong>
-            <span>{note.sessionTitle || "No session connected"}</span>
+            <strong>회차 정보</strong>
+            <span>{note.sessionTitle || "연결된 회차가 없습니다."}</span>
             {note.sessionInstructorName ? (
-              <small>Instructor: {note.sessionInstructorName}</small>
+              <small>강사: {note.sessionInstructorName}</small>
             ) : null}
           </div>
           <pre className="note-content">{note.content}</pre>
         </article>
 
         <article className="panel">
-          <h2>Tagged instructors</h2>
+          <h2>태그된 강사</h2>
           {note.tags.length === 0 ? (
             <EmptyState
-              title="No tags found."
-              description="This note currently has no instructor tag records."
+              title="태그 정보가 없습니다."
+              description="이 정리글에는 아직 강사 태그 기록이 없습니다."
             />
           ) : (
             <div className="list-stack">
@@ -91,7 +91,7 @@ export default function TaggedNoteDetailPage() {
                   <strong>{tag.instructorName}</strong>
                   <span>{tag.instructorId}</span>
                   <small>
-                    Tagged by {tag.taggedByName} at {formatDateTime(tag.taggedAt)}
+                    {tag.taggedByName} 님이 {formatDateTime(tag.taggedAt)}에 태그
                   </small>
                 </div>
               ))}
@@ -102,11 +102,11 @@ export default function TaggedNoteDetailPage() {
 
       <section className="panel">
         <div className="section-title-row">
-          <h2>Comment timeline</h2>
+          <h2>코멘트 타임라인</h2>
         </div>
 
         {note.comments.length === 0 ? (
-          <p className="muted-text">No instructor comments yet.</p>
+          <p className="muted-text">아직 등록된 강사 코멘트가 없습니다.</p>
         ) : (
           <div className="timeline-list">
             {note.comments.map((item) => (
@@ -126,11 +126,11 @@ export default function TaggedNoteDetailPage() {
       </section>
 
       <section className="panel">
-        <h2>Write comment</h2>
+        <h2>코멘트 작성</h2>
         <form className="form-stack" onSubmit={handleSubmit}>
           <FormField
-            label="Feedback"
-            hint="Leave a clear comment for the student. The message is saved as an instructor comment."
+            label="피드백"
+            hint="학생이 바로 이해할 수 있도록 구체적으로 작성해 주세요."
           >
             <textarea
               rows={5}
@@ -143,7 +143,7 @@ export default function TaggedNoteDetailPage() {
           {message ? <div className="form-alert">{message}</div> : null}
 
           <button className="primary-button button-small" type="submit" disabled={saving}>
-            {saving ? "Saving..." : "Save comment"}
+            {saving ? "저장 중..." : "코멘트 저장"}
           </button>
         </form>
       </section>

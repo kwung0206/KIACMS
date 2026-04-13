@@ -115,27 +115,27 @@ export default function NoteEditorPage({ mode }) {
   }
 
   if (loading) {
-    return <LoadingScreen message="Loading note editor." />;
+    return <LoadingScreen message="노트 편집 화면을 준비하는 중입니다." />;
   }
 
   return (
     <div className="page-stack">
       <PageHeader
-        title={mode === "edit" ? "Edit note" : "Create note"}
-        description="Add a title, content, course, and optional instructor tags. Instructor search is not available yet, so tags still use UUID input."
+        title={mode === "edit" ? "노트 수정" : "노트 작성"}
+        description="제목, 내용, 연결 과정과 회차를 입력하고 필요하면 강사 태그를 추가할 수 있습니다."
         actions={
           <Link className="ghost-button button-small" to="/student/notes">
-            Back to notes
+            노트 목록으로
           </Link>
         }
       />
 
       <form className="panel form-stack" onSubmit={handleSubmit}>
-        <FormField label="Title">
+        <FormField label="제목">
           <input name="title" value={form.title} onChange={handleChange} required />
         </FormField>
 
-        <FormField label="Content">
+        <FormField label="내용">
           <textarea
             name="content"
             value={form.content}
@@ -147,13 +147,13 @@ export default function NoteEditorPage({ mode }) {
 
         <div className="form-grid">
           <FormField
-            label="Course ID"
-            hint="Current backend flow uses a direct UUID until a course picker API is added."
+            label="과정 ID"
+            hint="현재는 과정 선택 API가 없어 UUID 직접 입력 방식으로 연결합니다."
           >
             <input name="courseId" value={form.courseId} onChange={handleChange} required />
           </FormField>
 
-          <FormField label="Session ID" hint="Optional. Connect the note to one class session when available.">
+          <FormField label="회차 ID" hint="선택 입력입니다. 특정 회차와 연결할 때만 입력해 주세요.">
             <input
               name="courseSessionId"
               value={form.courseSessionId}
@@ -163,9 +163,9 @@ export default function NoteEditorPage({ mode }) {
         </div>
 
         <div className="info-card">
-          <strong>Recent calendar sessions</strong>
+          <strong>최근 캘린더 회차</strong>
           {sessionHints.length === 0 ? (
-            <p className="muted-text">No recent session hints are available.</p>
+            <p className="muted-text">최근 회차 안내를 불러오지 못했습니다.</p>
           ) : (
             <div className="list-stack compact-list">
               {sessionHints.slice(0, 6).map((event) => (
@@ -182,8 +182,8 @@ export default function NoteEditorPage({ mode }) {
 
         {mode === "create" ? (
           <FormField
-            label="Tagged instructor UUID list"
-            hint="Separate multiple instructor IDs with commas."
+            label="태그할 강사 UUID 목록"
+            hint="여러 명을 입력할 때는 쉼표로 구분해 주세요."
           >
             <input
               name="initialTagInstructorIds"
@@ -194,9 +194,9 @@ export default function NoteEditorPage({ mode }) {
         ) : (
           <>
             <div className="info-card">
-              <strong>Current tagged instructors</strong>
+              <strong>현재 태그된 강사</strong>
               {existingTags.length === 0 ? (
-                <p className="muted-text">No tagged instructors yet.</p>
+                <p className="muted-text">아직 태그된 강사가 없습니다.</p>
               ) : (
                 <div className="list-stack compact-list">
                   {existingTags.map((tag) => (
@@ -210,8 +210,8 @@ export default function NoteEditorPage({ mode }) {
             </div>
 
             <FormField
-              label="Additional tagged instructor UUID list"
-              hint="Editing currently supports adding new instructor tags only."
+              label="추가할 강사 UUID 목록"
+              hint="수정 화면에서는 새로운 강사 태그 추가만 지원합니다."
             >
               <input
                 name="additionalTagInstructorIds"
@@ -226,7 +226,7 @@ export default function NoteEditorPage({ mode }) {
 
         <div className="button-row">
           <button className="primary-button button-small" type="submit" disabled={saving}>
-            {saving ? "Saving..." : mode === "edit" ? "Save note" : "Create note"}
+            {saving ? "저장 중..." : mode === "edit" ? "노트 저장" : "노트 작성"}
           </button>
         </div>
       </form>

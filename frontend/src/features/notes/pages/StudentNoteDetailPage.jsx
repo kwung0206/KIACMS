@@ -61,7 +61,7 @@ export default function StudentNoteDetailPage() {
   }
 
   if (loading) {
-    return <LoadingScreen message="정리글 상세를 불러오는 중..." />;
+    return <LoadingScreen message="정리글 상세를 불러오는 중입니다." />;
   }
 
   return (
@@ -88,7 +88,7 @@ export default function StudentNoteDetailPage() {
             <small className="muted-text">{formatDateTime(note.updatedAt)} 수정</small>
           </div>
           <div className="info-card">
-            <strong>과정/회차</strong>
+            <strong>과정 / 회차</strong>
             <span>
               {note.courseTitle}
               {note.sessionTitle ? ` · ${note.sessionTitle}` : ""}
@@ -102,7 +102,7 @@ export default function StudentNoteDetailPage() {
           {note.tags.length === 0 ? (
             <EmptyState
               title="태그된 강사가 없습니다."
-              description="수정 화면에서 강사 UUID를 입력해 추가 태그할 수 있습니다."
+              description="수정 화면에서 강사 UUID를 입력해 태그를 추가할 수 있습니다."
             />
           ) : (
             <div className="list-stack">

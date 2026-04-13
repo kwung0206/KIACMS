@@ -125,7 +125,7 @@ export default function StudentNotesPage() {
         onMonthChange={(offset) => setMonth((current) => addMonths(current, offset))}
         onSelectDate={setSelectedDate}
         onEventClick={(note) => navigate(`/student/notes/${note.id}`)}
-        emptyMessage="서울 시간 기준 오늘 날짜를 기본 선택합니다. 노트가 없어도 달력은 항상 표시됩니다."
+        emptyMessage="한국 시간 기준 오늘 날짜가 기본 선택됩니다. 노트가 없어도 캘린더는 항상 표시됩니다."
       />
 
       {loading ? (
@@ -133,10 +133,10 @@ export default function StudentNotesPage() {
       ) : selectedDayNotes.length === 0 ? (
         <EmptyState
           title={`${formatDate(selectedDate)}에 작성된 노트가 없습니다.`}
-          description="다른 날짜를 선택하거나 새로운 노트를 작성해 보세요."
+          description="다른 날짜를 선택하거나 새 노트를 작성해 보세요."
           action={
             <Link className="primary-button button-small" to="/student/notes/new">
-              노트 작성
+              새 노트 작성
             </Link>
           }
         />

@@ -33,20 +33,20 @@ export default function InstructorTaggedNotesPage() {
   }, []);
 
   if (loading) {
-    return <LoadingScreen message="태그된 정리글 목록을 불러오는 중..." />;
+    return <LoadingScreen message="태그된 정리글 목록을 불러오는 중입니다." />;
   }
 
   return (
     <div className="page-stack">
       <PageHeader
         title="태그된 정리글 목록"
-        description="학생이 나를 태그한 정리글을 확인하고 상세 화면으로 이동해 코멘트를 남길 수 있습니다."
+        description="학생이 나를 태그한 정리글을 확인하고 상세 화면에서 코멘트를 남길 수 있습니다."
       />
 
       {notes.length === 0 ? (
         <EmptyState
           title="태그된 정리글이 없습니다."
-          description="학생이 강사를 태그하면 여기에 목록이 표시됩니다."
+          description="학생이 강사를 태그하면 이 목록에 자동으로 표시됩니다."
         />
       ) : (
         <div className="panel table-panel">
