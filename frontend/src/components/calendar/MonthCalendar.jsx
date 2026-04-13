@@ -77,7 +77,7 @@ export default function MonthCalendar({
               <div className="calendar-markers">
                 {dayEvents.slice(0, 3).map((event) => (
                   <span
-                    key={event.id}
+                    key={event.markerKey || event.id}
                     className="calendar-marker"
                     style={{ "--marker-color": event.color || "#0f62fe" }}
                     onClick={(clickEvent) => {

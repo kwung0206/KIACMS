@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { fetchStudentCalendar } from "../../../api/courseApi";
 import {
   createNote,
@@ -10,7 +10,7 @@ import {
 import FormField from "../../../components/common/FormField";
 import LoadingScreen from "../../../components/common/LoadingScreen";
 import PageHeader from "../../../components/common/PageHeader";
-import { addDays, todayRange } from "../../../utils/date";
+import { addDays, formatDate, formatDateTime, getDateKey, todayRange } from "../../../utils/date";
 
 const initialForm = {
   title: "",
@@ -24,12 +24,17 @@ const initialForm = {
 export default function NoteEditorPage({ mode }) {
   const navigate = useNavigate();
   const { noteId } = useParams();
+  const [searchParams] = useSearchParams();
   const [form, setForm] = useState(initialForm);
   const [sessionHints, setSessionHints] = useState([]);
   const [existingTags, setExistingTags] = useState([]);
   const [loading, setLoading] = useState(mode === "edit");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+
+  const selectedDate = searchParams.get("date") || "";
+  const prefilledCourseId = searchParams.get("courseId") || "";
+  const prefilledSessionId = searchParams.get("courseSessionId") || "";
 
   useEffect(() => {
     loadSessionHints();
@@ -40,6 +45,18 @@ export default function NoteEditorPage({ mode }) {
       loadNote();
     }
   }, [mode, noteId]);
+
+  useEffect(() => {
+    if (mode !== "create") {
+      return;
+    }
+
+    setForm((current) => ({
+      ...current,
+      courseId: current.courseId || prefilledCourseId,
+      courseSessionId: current.courseSessionId || prefilledSessionId,
+    }));
+  }, [mode, prefilledCourseId, prefilledSessionId]);
 
   async function loadSessionHints() {
     const today = todayRange().from;
@@ -114,6 +131,13 @@ export default function NoteEditorPage({ mode }) {
     }
   }
 
+  const selectedSessionHint = useMemo(() => {
+    if (!prefilledSessionId) {
+      return null;
+    }
+    return sessionHints.find((event) => String(event.id) === prefilledSessionId) || null;
+  }, [prefilledSessionId, sessionHints]);
+
   if (loading) {
     return <LoadingScreen message="노트 편집 화면을 준비하는 중입니다." />;
   }
@@ -122,13 +146,28 @@ export default function NoteEditorPage({ mode }) {
     <div className="page-stack">
       <PageHeader
         title={mode === "edit" ? "노트 수정" : "노트 작성"}
-        description="제목, 내용, 연결 과정과 회차를 입력하고 필요하면 강사 태그를 추가할 수 있습니다."
+        description="제목과 내용을 입력하고 필요하면 과정, 회차, 강사 태그를 함께 연결할 수 있습니다."
         actions={
           <Link className="ghost-button button-small" to="/student/notes">
             노트 목록으로
           </Link>
         }
       />
+
+      {mode === "create" && (selectedDate || selectedSessionHint) ? (
+        <section className="panel info-card">
+          <strong>선택한 작성 기준</strong>
+          <span>
+            날짜: {selectedDate ? formatDate(selectedDate) : "미지정"}
+            {selectedSessionHint ? ` · 수업: ${selectedSessionHint.sessionTitle}` : ""}
+          </span>
+          <small>
+            {selectedSessionHint
+              ? "선택한 수업의 과정 ID와 회차 ID가 자동으로 채워졌습니다."
+              : "선택한 날짜 기준으로 노트를 작성합니다. 과정과 회차는 필요에 따라 직접 입력해 주세요."}
+          </small>
+        </section>
+      ) : null}
 
       <form className="panel form-stack" onSubmit={handleSubmit}>
         <FormField label="제목">
@@ -148,7 +187,7 @@ export default function NoteEditorPage({ mode }) {
         <div className="form-grid">
           <FormField
             label="과정 ID"
-            hint="현재는 과정 선택 API가 없어 UUID 직접 입력 방식으로 연결합니다."
+            hint="과정 선택 API가 아직 없어 UUID 직접 입력 방식으로 연결합니다."
           >
             <input name="courseId" value={form.courseId} onChange={handleChange} required />
           </FormField>
@@ -163,18 +202,30 @@ export default function NoteEditorPage({ mode }) {
         </div>
 
         <div className="info-card">
-          <strong>최근 캘린더 회차</strong>
+          <strong>최근 수업 일정</strong>
           {sessionHints.length === 0 ? (
-            <p className="muted-text">최근 회차 안내를 불러오지 못했습니다.</p>
+            <p className="muted-text">최근 수업 안내를 불러오지 못했습니다.</p>
           ) : (
             <div className="list-stack compact-list">
               {sessionHints.slice(0, 6).map((event) => (
-                <div key={event.id} className="hint-row">
+                <button
+                  key={event.id}
+                  type="button"
+                  className={
+                    String(event.id) === form.courseSessionId ? "select-card active" : "select-card"
+                  }
+                  onClick={() =>
+                    setForm((current) => ({
+                      ...current,
+                      courseId: String(event.courseId),
+                      courseSessionId: String(event.id),
+                    }))
+                  }
+                >
+                  <strong>{event.sessionTitle}</strong>
                   <span>{event.courseTitle}</span>
-                  <small>
-                    {event.title} | sessionId: {event.id}
-                  </small>
-                </div>
+                  <small>{formatDateTime(event.start)}</small>
+                </button>
               ))}
             </div>
           )}
