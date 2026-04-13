@@ -1,693 +1,225 @@
-# KIA 공모전
+# KIACMS
 
-# KIACMS 계획서 초안
+KIACMS (Korea IT Academy Class Management System) is an AI-powered class management platform designed for real educational operations rather than a generic LMS.
 
-**프로젝트명:** KIACMS
+This repository is organized as a monorepo with:
 
-**부제:** AI 기반 학원 수업·학습·프로젝트 통합 관리 시스템
+- `backend/`: Spring Boot API server
+- `frontend/`: React + Vite web client
+- `infra/`: local infrastructure such as PostgreSQL for development
+- `docs/`: architecture and implementation notes
 
-**풀네임:** Korea IT Academy Class Management System
+## Step 1 Output
 
----
+Step 1 establishes the implementation-ready architecture for the project:
 
-## 1. 프로젝트 개요
+- overall system architecture
+- backend and frontend directory structure
+- domain decomposition
+- core entity relationship design
+- security baseline and implementation principles
 
-KIACMS는 학원생, 강사, 멘토, 운영 관리자(root)를 하나의 플랫폼으로 연결하여, 수업 일정 관리, 강의 리소스 제공, 학습 정리, 피드백, 프로젝트 모집 및 추천 기능을 통합적으로 제공하는 **AI 기반 교육 운영 지원 솔루션**이다.
+See [docs/architecture/step-01-system-architecture.md](docs/architecture/step-01-system-architecture.md).
 
-기존 교육 현장에서는 수업 일정, Zoom 링크, 녹화본, 학습 정리, 프로젝트 모집 정보가 서로 다른 도구와 채널에 흩어져 있어 사용자 경험이 단절되고 운영 효율이 떨어지는 문제가 발생한다. KIACMS는 이러한 문제를 해결하기 위해, 교육 운영에 필요한 핵심 흐름을 한 곳에 통합하고 AI를 활용하여 학습 정리, 수업 추천, 프로젝트 추천 기능을 제공한다.
+## Step 2 Output
 
-본 시스템은 단순한 LMS가 아니라, **교육 현장 구성원들이 실제로 겪는 운영·학습·협업의 문제를 줄이는 실무형 AI 솔루션**을 목표로 한다.
+Step 2 defines the PostgreSQL ERD and generates the initial Spring Boot JPA entity layer.
 
----
+- detailed table and enum design
+- relationship and constraint proposal
+- initial backend entity code under `backend/src/main/java/com/kiacms`
 
-## 2. 문제 정의
+See [docs/architecture/step-02-erd-and-entities.md](docs/architecture/step-02-erd-and-entities.md).
 
-현재 교육 현장에서는 다음과 같은 문제가 반복된다.
+## Step 3 Output
 
-첫째, 학생은 수업 일정, Zoom 접속 링크, 녹화본 링크, 학습 정리 공간을 각각 다른 서비스에서 관리해야 하므로 학습 흐름이 끊긴다.
+Step 3 makes the backend project runnable with shared runtime foundations.
 
-둘째, 강사는 수업별 리소스를 수동으로 전달하고, 학생이 남긴 질문이나 정리글에 대한 피드백을 체계적으로 관리하기 어렵다.
+- Spring Boot backend bootstrap structure
+- common API response format
+- global exception handling
+- repository skeletons
+- health check endpoint
+- local and test configuration examples
 
-셋째, 멘토는 자신이 관리하는 학생들의 학습 현황과 프로젝트 참여 정보를 한 번에 보기 어렵다.
+See [docs/architecture/step-03-backend-bootstrap.md](docs/architecture/step-03-backend-bootstrap.md).
 
-넷째, 학생들은 자신이 원하는 진로에 맞는 강의를 찾거나, 자신과 맞는 프로젝트를 찾는 과정에서 많은 시간과 판단 비용을 소비한다.
+## Planned Delivery Order
 
-다섯째, 교육 운영자는 사용자 권한, 역할 승인, 수업 일정 등록, 강의 리소스 배포 등을 수작업으로 관리해야 한다.
+1. Step 1: architecture and project structure
+2. Step 2: DB entity and ERD design
+3. Step 3: Spring Boot project initialization
+4. Step 4: authentication, authorization, and approval flow
+5. Step 5: course, session, and calendar features
+6. Step 6: notes, tags, and comments
+7. Step 7: project recruiting and applications
+8. Step 8: notifications
+9. Step 9: AI features
+10. Step 10: React frontend integration
+11. Step 11: security review and refactoring
+12. Step 12: README and run guide
 
-KIACMS는 이 문제를 해결하기 위해 다음을 제공한다.
+## Local Infrastructure
 
-- 역할 기반 사용자 관리 및 승인 체계
-- 과정/회차 중심의 수업 일정 및 리소스 관리
-- 학습 정리 및 강사 피드백 기능
-- 프로젝트 모집/지원 기능
-- AI 기반 학습 요약, 프로젝트 추천, 진로 기반 강의 추천
-- 사이트 내 알림(Notification) 기능
+The repository already includes a local PostgreSQL compose file for development.
 
----
+1. Copy `.env.example` to `.env`.
+2. Start PostgreSQL:
 
-## 3. 프로젝트 목표
+```powershell
+docker compose -f infra/docker-compose.yml --env-file .env up -d
+```
 
-### 3-1. 1차 목표
+3. Stop PostgreSQL:
 
-교육 현장에 필요한 핵심 기능을 하나의 플랫폼으로 통합하여, 수업 운영과 학습 경험을 개선한다.
+```powershell
+docker compose -f infra/docker-compose.yml --env-file .env down
+```
 
-### 3-2. 2차 목표
+## Frontend Run Guide
 
-AI를 활용하여 단순 정보 저장을 넘어, 사용자에게 실질적으로 도움이 되는 요약, 추천, 탐색 기능을 제공한다.
+The React client lives in `frontend/` and is built with Vite + React Router.
 
-### 3-3. 3차 목표
+### 1. Install
 
-보안적으로 안전한 구조와 역할 기반 접근 제어를 통해, 실제 서비스 수준의 설계를 반영한다.
+```powershell
+cd frontend
+npm install
+```
 
----
+### 2. Environment Variables
 
-## 4. 주요 사용자 및 역할 정의
+Create `frontend/.env` from `frontend/.env.example`.
 
-본 시스템의 사용자 역할은 아래와 같이 구분된다.
+```powershell
+Copy-Item .env.example .env
+```
 
-### 4-1. 학생(Student)
+Default example:
 
-학원 수강생 계정으로, 수업 캘린더 확인, 강의 상세 조회, 정리 페이지 작성, 프로젝트 모집글 조회 및 지원, AI 추천 기능 사용이 가능하다.
+```env
+VITE_API_BASE_URL=http://localhost:8080
+```
 
-### 4-2. 강사(Instructor)
+### 3. Run in Development
 
-수업을 담당하는 사용자로, 자신이 담당하는 회차별 수업에 Zoom 링크와 녹화본 링크를 등록할 수 있으며, 학생이 태그한 정리글에 코멘트를 작성할 수 있다. 또한 프로젝트의 멘토로 지원할 수 있다.
+```powershell
+cd frontend
+npm run dev
+```
 
-### 4-3. 멘토(Mentor)
+The default Vite dev server runs on `http://localhost:5173`.
 
-학생 학습 관리 및 프로젝트 멘토링을 담당하는 사용자로, 자신이 관리하는 학생 목록을 조회하고, 프로젝트 모집글에 멘토로 지원할 수 있다.
+### 4. Production Build
 
-### 4-4. 루트 관리자(Root)
+```powershell
+cd frontend
+npm run build
+```
 
-최상위 운영 관리자 계정으로, 사용자 승인, 역할 승격 승인, 수업 일정 등록, 주요 운영 데이터를 관리한다.
+Optional preview:
 
----
+```powershell
+cd frontend
+npm run preview -- --host
+```
 
-## 5. 역할 정책 및 회원가입/승인 정책
+## Frontend Integration Notes
 
-한 사용자는 **학생 / 강사 / 멘토 중 하나의 역할만 선택 가능**하다.
+### Authentication
 
-회원가입 시 사용자는 원하는 역할을 선택하여 가입 신청을 진행하며, 가입 직후 즉시 전체 기능이 열리는 것이 아니라 **승인 대기 상태**가 된다.
+- Login API: `POST /api/auth/login`
+- Signup API: `POST /api/auth/signup`
+- The access token returned from login is stored in `localStorage` under `kiacms.accessToken`.
+- The current user snapshot is stored in `localStorage` under `kiacms.user`.
+- Pending signup information is stored in `sessionStorage` under `kiacms.pendingSignup`.
 
-루트 관리자는 가입 신청 내용을 검토한 뒤 승인 또는 반려할 수 있다.
+### Authorization Header Injection
 
-### 5-1. 사용자 상태값
+The shared client is implemented in `frontend/src/api/http.js`.
 
-- PENDING: 가입 승인 대기
-- APPROVED: 승인 완료
-- REJECTED: 승인 거절
-- WITHDRAWN: 회원 탈퇴 상태
+- `request()` reads the access token from local storage.
+- When a token exists, it injects `Authorization: Bearer <token>`.
+- Public endpoints such as login and signup call the client with `auth: false`.
 
-### 5-2. 역할 승격 신청
+### 401 Handling
 
-사용자는 마이페이지에서 역할 승격 신청을 할 수 있다. 예를 들어 학생이 멘토 또는 강사 역할로 전환을 요청할 수 있다. 이 신청은 root가 검토 후 승인 또는 거절한다.
+- On `401`, the client clears the saved token and cached user.
+- It dispatches the `kiacms:unauthorized` browser event.
+- `AuthContext` listens for that event and logs the user out cleanly.
+- Protected pages then route back through the existing auth guard flow.
 
-### 5-3. 승인 처리 원칙
+## Current Frontend Scope
 
-- 승인되지 않은 사용자는 제한된 기능만 접근 가능하다.
-- 승인된 사용자만 본인 역할에 맞는 핵심 기능을 사용할 수 있다.
-- 거절 시 거절 사유를 기록할 수 있도록 한다.
+### Common
 
----
+- Login / signup / pending approval
+- Role-based routing and home redirects
+- App shell with sidebar, topbar, notification dropdown, and theme toggle
+- Shared API client, auth context, theme context, and route guards
 
-## 6. 핵심 기능 명세
+### Student
 
-## 6-1. 공통 기능
+- Dashboard
+- Course calendar
+- Session detail
+- Note list / create / detail / edit
+- Project recruiting post create
+- My recruiting posts
+- My project applications
 
-### 회원가입
+### Instructor
 
-사용자는 이름, 이메일, 비밀번호, 연락처, 역할, 자기소개 등 기본 정보를 입력해 회원가입을 신청한다.
+- Dashboard
+- Assigned session management
+- Tagged note list and detail
+- Mentor application status
 
-### 로그인 / 로그아웃
+### Mentor
 
-승인된 사용자만 정상 로그인 가능하다. 인증은 역할 기반 접근 제어와 함께 동작해야 한다.
+- Dashboard
+- Mentor application status
 
-### 마이페이지
+### Root
 
-사용자는 자신의 기본 정보, 역할 정보, 신청 상태, 활동 이력을 조회하고 수정할 수 있다.
+- Dashboard
+- Root course/admin placeholder screen
 
-마이페이지 상세 기능은 다음과 같다.
+## Known Gaps / TODO
 
-- 내 정보 조회
-- 이름, 연락처, 자기소개 수정
-- 비밀번호 변경
-- 프로필 이미지 변경
-- 역할 승격 신청
-- 내가 수강 중인 강의 목록 조회
-- 내가 작성한 정리글 목록 조회
-- 내가 지원한 프로젝트 목록 조회
-- 내가 올린 프로젝트 모집글 목록 조회
-- 알림 목록 조회
-- 테마 설정 변경(다크모드 / 라이트모드)
-- 회원 탈퇴
+These items are intentionally shown in the frontend as placeholders, disabled actions, or TODO cards because matching backend APIs are not available yet.
 
-### 회원 탈퇴
+- My page update APIs are missing:
+  - profile update
+  - password change
+  - account withdrawal
+- Root detailed operation APIs are limited:
+  - richer approval analytics
+  - course/session aggregate metrics
+  - 운영 로그/감사 로그 대시보드
+- Mentor-specific student management APIs are missing:
+  - managed student list
+  - mentee course progress summary
+  - mentee note/project participation summary
+- Instructor tag UX has a backend constraint:
+  - note creation supports `taggedInstructorIds`
+  - note edit does not support tag removal or replacement
+  - there is no instructor search API yet, so create/edit uses a minimal input flow
+- Project management is currently read/create/decision oriented:
+  - no project post edit API
+  - no project post delete/close API from the frontend
+- Notification target URLs depend on backend-provided `targetUrl`; if a backend event does not provide one, the frontend falls back to the notifications page.
 
-회원 탈퇴는 물리 삭제가 아니라 **soft delete 방식**으로 처리한다. 탈퇴 시 계정은 비활성화되며, 데이터 정합성을 위해 기존 작성 기록은 유지한다.
+## Suggested Next Priorities
 
----
+1. Add user self-service APIs for profile update, password change, and withdrawal.
+2. Add mentor management APIs for assigned students and learning summaries.
+3. Add richer root dashboards for approvals, courses, sessions, and audit signals.
+4. Add instructor search/select API so note tagging can move from manual input to searchable UX.
+5. Add project post edit/close APIs and align PM management UI with those actions.
+6. Add pagination and search for notifications, notes, and project lists.
 
-## 6-2. 학생 기능
+## Notes
 
-### 수업 캘린더 조회
-
-학생은 자신이 등록된 과정과 연결된 수업 회차(Class Session)를 캘린더 형태로 조회할 수 있다.
-
-캘린더에는 다음 정보가 표시된다.
-
-- 과정명
-- 수업 날짜 및 시간
-- 진행 상태
-- Zoom 링크 등록 여부
-- 녹화본 링크 등록 여부
-
-### 수업 상세 조회
-
-학생이 캘린더의 특정 회차를 클릭하면 상세 화면 또는 모달이 열린다.
-
-상세 화면에는 다음 정보가 표시된다.
-
-- 과정명
-- 회차명 또는 회차 번호
-- 수업 일시
-- 강사명
-- Zoom 접속 링크
-- 녹화본 링크
-- 정리 페이지 링크
-- 녹화본 시청 상태
-
-### 녹화본 시청 상태 관리
-
-학생은 각 수업 회차의 녹화본에 대해 다음 상태를 직접 표시할 수 있다.
-
-- 보기 전
-- 보는 중
-- 시청 완료
-
-이 상태는 회차별로 저장되며, 학습 진행 추적에 사용된다.
-
-### 정리 페이지 작성
-
-학생은 과정별 또는 회차별로 학습 정리글을 작성할 수 있다. 정리 페이지는 노션과 유사한 문서형 인터페이스를 지향한다.
-
-정리 페이지 기능은 다음과 같다.
-
-- 제목 입력
-- 본문 작성
-- 과정별 분류
-- 회차별 연결
-- 수정/삭제
-- 임시 저장
-- 태그 기능
-
-### 강사 태그 기능
-
-학생은 정리글에서 담당 강사를 태그할 수 있다. 태그된 강사는 해당 정리글에 대한 질문 또는 요청이 있음을 알림으로 받는다.
-
-### Notion 연동
-
-학생은 개인 API 키를 등록해 자신의 Notion과 연동할 수 있다. 이후 AI가 당일 작성한 정리글을 요약 또는 재구성하여 Notion 페이지로 적재할 수 있다.
-
-### 프로젝트 모집글 조회 및 지원
-
-학생은 프로젝트 모집 게시판에서 모집 중인 프로젝트를 조회할 수 있다.
-
-필터 기능 예시:
-
-- 모집 분야별 필터링
-- 프론트엔드
-- 백엔드
-- AI
-- 보안
-- 디자이너
-- 기타
-
-학생은 프로젝트 모집글에 지원서를 작성하여 지원할 수 있다.
-
-지원서에 포함되는 정보는 다음과 같다.
-
-- 지원 동기
-- 학원 수강 이력
-- 자격증 목록
-- 기술 스택
-- 포트폴리오 링크
-- 자기소개
-
-### AI 추천 기능 사용
-
-학생은 AI 추천 페이지에서 다음 기능을 사용할 수 있다.
-
-- 원하는 프로젝트 설명 입력 후 유사 프로젝트 추천 받기
-- 원하는 진로 입력 후 적합한 강의 추천 받기
-
-## 6-3. 강사 기능
-
-### 강사 캘린더 조회
-
-강사는 자신이 담당하는 과정과 회차를 캘린더 형태로 조회할 수 있다.
-
-### 회차별 강의 리소스 등록
-
-강사는 특정 회차에 대해 다음 리소스를 등록할 수 있다.
-
-- Zoom 접속 링크
-- 녹화본 링크
-- 추가 안내사항
-- 정리 페이지 참고 링크
-
-강사가 등록한 링크는 해당 회차와 연결된 학생들에게 자동으로 표시된다.
-
-### 학생 태그 알림 확인
-
-학생이 정리글에서 강사를 태그하면 강사는 알림을 받는다.
-
-### 정리글 조회 및 코멘트 작성
-
-강사는 자신이 태그된 정리글을 조회하고 코멘트를 작성할 수 있다.
-
-코멘트 기능:
-
-- 개념 보충
-- 질문 답변
-- 피드백 작성
-- 수정 요청
-
-### 멘토 지원
-
-강사는 프로젝트 모집글에 멘토 역할로 지원할 수 있다.
-
-멘토 지원 시 입력 항목:
-
-- 지도 가능 분야
-- 기술 스택
-- 멘토링 가능 범위
-- 자기소개
-
----
-
-## 6-4. 멘토 기능
-
-### 관리 학생 등록 및 조회
-
-멘토는 자신이 관리할 학생을 검색하거나 배정받아 관리 목록에 추가할 수 있다.
-
-### 관리 학생 정보 조회
-
-멘토는 자신이 관리하는 학생의 다음 정보를 조회할 수 있다.
-
-- 수강 중인 과정
-- 학습 정리 현황
-- 프로젝트 참여 여부
-- 지원 이력
-
-### 프로젝트 멘토 지원
-
-멘토는 프로젝트 모집글에 멘토로 지원할 수 있다. 지원 방식은 강사와 동일하되, 멘토 프로필에 맞는 소개 정보가 포함된다.
-
----
-
-## 6-5. 루트 관리자 기능
-
-### 사용자 승인 관리
-
-루트 관리자는 회원가입 신청 내역을 조회하고 승인 또는 거절할 수 있다.
-
-조회 항목:
-
-- 이름
-- 이메일
-- 신청 역할
-- 자기소개
-- 신청일시
-- 현재 상태
-
-### 역할 승격 신청 처리
-
-루트 관리자는 역할 승격 신청을 검토하고 승인 또는 거절할 수 있다.
-
-### 과정 등록
-
-루트 관리자는 새로운 과정을 등록할 수 있다.
-
-과정 등록 항목:
-
-- 과정명
-- 과정 설명
-- 카테고리
-- 담당 강사
-- 시작일 / 종료일
-- 대상 진로 카테고리
-- 난이도
-- 선수 지식
-
-### 수업 회차 등록
-
-루트 관리자는 과정별 회차(Class Session)를 등록할 수 있다.
-
-회차 등록 항목:
-
-- 연결 과정
-- 회차 번호 또는 제목
-- 수업 날짜 및 시간
-- 수업 설명
-- 담당 강사
-
-### 학생 수강 등록 관리
-
-루트 관리자는 학생을 특정 과정에 등록할 수 있다.
-
-### 운영 대시보드
-
-루트 관리자는 시스템 운영 현황을 조회할 수 있다.
-
-예시:
-
-- 승인 대기 사용자 수
-- 진행 중인 과정 수
-- 등록된 회차 수
-- 프로젝트 모집글 수
-- 미확인 알림 수
-
----
-
-## 6-6. 프로젝트 모집 기능
-
-### 프로젝트 모집글 작성
-
-학생은 PM 역할로 프로젝트 모집글을 작성할 수 있다.
-
-모집글에 포함되는 항목:
-
-- 프로젝트 제목
-- 프로젝트 설명
-- 목표
-- 사용 예정 기술
-- 모집 분야
-- 모집 인원
-- 진행 기간
-- 연락 방식
-- PM 소개
-- PM 수강 이력
-- PM 자격증 목록
-
-### 포지션별 모집
-
-프로젝트는 단일 모집글 내에 여러 포지션을 둘 수 있다.
-
-예시:
-
-- 프론트엔드 2명
-- 백엔드 2명
-- AI 1명
-
-필요 인원이 변경되면 해당 포지션의 모집 상태를 수정할 수 있다.
-
-### 지원서 제출
-
-학생 또는 멘토/강사는 모집글에 맞춰 지원서를 제출할 수 있다.
-
-### 지원서 조회 및 처리
-
-PM은 본인이 작성한 모집글에 들어온 지원서를 조회할 수 있다.
-
-처리 방식:
-
-- 수락
-- 거절
-
-거절을 선택할 경우 **거절 사유 작성은 필수**로 한다.
-
-### 지원 상태 관리
-
-지원 상태는 다음과 같이 관리한다.
-
-- SUBMITTED
-- ACCEPTED
-- REJECTED
-- WITHDRAWN
-
----
-
-## 6-7. 알림(Notification) 기능
-
-본 시스템은 **사이트 내 알림** 방식을 사용한다.
-
-알림 발생 예시는 다음과 같다.
-
-- 회원가입 승인 완료
-- 역할 승격 신청 결과
-- 강사가 Zoom 링크 등록
-- 강사가 녹화본 링크 등록
-- 학생이 강사를 태그
-- 강사가 정리글에 코멘트 작성
-- 프로젝트 지원 도착
-- 프로젝트 지원 수락/거절 결과
-- 멘토 지원 도착
-
-알림 기능 상세:
-
-- 읽지 않은 알림 수 표시
-- 알림 목록 조회
-- 알림 클릭 시 관련 페이지로 이동
-- 읽음 처리
-- 전체 읽음 처리
-
----
-
-## 7. AI 기능 상세 명세
-
-## 7-1. 학습 정리 AI 요약
-
-학생이 작성한 정리글을 기반으로 AI가 내용을 분석하여 다음 정보를 생성한다.
-
-- 핵심 개념 요약
-- 복습 포인트
-- 질문 포인트
-- 놓치기 쉬운 개념 정리
-
-이 기능은 학생 개인 복습과 Notion 적재용 문서 생성에 활용된다.
-
-## 7-2. 진로 기반 강의 추천
-
-학생이 원하는 진로를 입력하면, AI가 등록된 강의 정보와 비교하여 적절한 강의를 추천한다.
-
-추천 기준 예시:
-
-- 진로 키워드
-- 기술 스택
-- 난이도
-- 선수 지식
-- 과정 설명
-
-출력 예시:
-
-- 추천 강의명
-- 추천 이유
-- 먼저 들으면 좋은 강의 순서
-
-## 7-3. 유사 프로젝트 추천
-
-학생이 원하는 프로젝트 내용을 입력하면, AI가 기존 프로젝트 모집글 DB를 기반으로 유사한 프로젝트를 추천한다.
-
-출력 예시:
-
-- 유사 프로젝트 목록
-- 유사한 이유
-- 추천 포지션
-
----
-
-## 8. 기술 스택
-
-### 프론트엔드
-
-- React
-- Vite
-- React Router
-- Axios
-- 상태관리 도구(예: Zustand 또는 Redux Toolkit)
-- UI 라이브러리 선택 가능
-- 다크모드 / 라이트모드 지원
-
-### 백엔드
-
-- Spring Boot (Java)
-- Spring Security
-- Spring Data JPA
-- REST API
-
-### 데이터베이스
-
-- PostgreSQL
-
-### 외부 연동
-
-- OpenAI API
-- Notion API
-
----
-
-## 9. 데이터 모델링 방향
-
-핵심 설계 원칙은 다음과 같다.
-
-- 사용자와 역할은 분리해서 관리하되, 현재 서비스 정책상 한 사용자는 하나의 주 역할만 가진다.
-- 과정(Course)과 회차(Class Session)는 반드시 분리한다.
-- 학생의 수강 이력은 Enrollment로 관리한다.
-- 회차별 리소스는 Session Resource로 관리한다.
-- 정리글, 태그, 코멘트는 별도 엔티티로 관리한다.
-- 프로젝트 모집글, 모집 포지션, 지원서는 독립된 엔티티로 관리한다.
-- 알림은 범용 Notification 엔티티로 관리한다.
-- 회원 탈퇴는 soft delete를 사용한다.
-
-예상 핵심 테이블은 다음과 같다.
-
-- users
-- role_upgrade_requests
-- courses
-- course_sessions
-- enrollments
-- session_resources
-- notes
-- note_tags
-- note_comments
-- project_posts
-- project_positions
-- project_applications
-- mentor_applications
-- notifications
-- user_settings
-- ai_request_logs
-
----
-
-## 10. 보안 요구사항 및 Secure Coding 방침
-
-본 시스템은 공모전 제출용이지만, 실제 서비스 수준의 기본 보안 원칙을 반영한다.
-
-### 10-1. 인증 및 인가
-
-- Spring Security 기반 인증/인가 적용
-- 역할별 접근 제어 적용
-- 승인되지 않은 계정은 핵심 기능 접근 제한
-- URL 및 API 단위 권한 검사 수행
-
-### 10-2. 비밀번호 보안
-
-- 비밀번호는 평문 저장 금지
-- BCrypt 등 해시 알고리즘 사용
-- 비밀번호 정책 적용 가능
-
-### 10-3. SQL Injection 방어
-
-- JPA 및 파라미터 바인딩 사용
-- 동적 문자열 결합 쿼리 지양
-- Native Query 최소화
-
-### 10-4. XSS 방어
-
-- 입력값 검증
-- HTML/script 입력 제한 또는 필터링
-- 사용자 표시 데이터 이스케이프 처리
-
-### 10-5. 세션/토큰 보안
-
-- 인증 토큰 저장 방식에 주의
-- HttpOnly, Secure, SameSite 등의 보안 옵션 고려
-- 세션 하이재킹 방지 정책 반영
-
-### 10-6. CORS / CSRF 대응
-
-- 허용 Origin 제한
-- 인증 구조에 맞는 CSRF 전략 적용
-
-### 10-7. API Key 보호
-
-- OpenAI API Key, Notion API Key는 프론트엔드에 노출 금지
-- 서버 환경변수 사용
-- 민감정보 로그 출력 금지
-
-### 10-8. 감사 로그
-
-다음 이벤트는 로그로 기록할 수 있다.
-
-- 사용자 승인/거절
-- 역할 변경
-- 링크 등록
-- 지원서 처리
-- 회원 탈퇴
-- AI 요청 수행
-
----
-
-## 11. UI/UX 방향
-
-본 시스템은 학습과 운영을 함께 다루는 플랫폼이므로 복잡한 기능을 단순하게 보여주는 UI가 중요하다.
-
-핵심 UI 원칙:
-
-- 역할별 홈 화면 분리
-- 캘린더 중심 접근
-- 정리 페이지의 문서형 편집 경험 강화
-- 알림 아이콘과 즉시 이동 구조 제공
-- 프로젝트 모집 게시판의 필터링 편의성 강화
-- 마이페이지에서 설정과 활동 이력 통합 제공
-- 다크모드 / 라이트모드 지원
-
----
-
-## 12. MVP 범위
-
-공모전 제출 시점 기준 최소 기능 완성 범위는 다음과 같이 설정한다.
-
-### MVP 1
-
-회원가입, 로그인, 역할 신청, root 승인
-
-### MVP 2
-
-과정 등록, 회차 등록, 학생 수강 등록, 학생/강사 캘린더 조회
-
-### MVP 3
-
-강사의 Zoom 링크 / 녹화본 링크 등록 및 학생 자동 조회
-
-### MVP 4
-
-학생 정리 페이지 작성, 강사 태그, 강사 코멘트
-
-### MVP 5
-
-프로젝트 모집글 작성, 포지션별 모집, 지원서 제출, 수락/거절
-
-### MVP 6
-
-AI 학습 정리 요약, 진로 기반 강의 추천, 유사 프로젝트 추천
-
-### MVP 7
-
-사이트 내 알림, 마이페이지, 다크모드/라이트모드, 회원 탈퇴(soft delete)
-
----
-
-## 13. 기대 효과
-
-KIACMS를 통해 기대할 수 있는 효과는 다음과 같다.
-
-- 교육 운영 정보의 통합 관리
-- 학생의 학습 흐름 유지 및 자기주도 학습 강화
-- 강사의 피드백 관리 효율 향상
-- 멘토와 학생 간 관리 체계 강화
-- 프로젝트 참여 활성화
-- AI를 통한 맞춤형 학습 및 탐색 지원
-- 실무형 교육 관리 솔루션으로의 확장 가능성 확보
-
----
-
-## 14. 최종 요약
-
-KIACMS는 단순한 강의 관리 시스템이 아니라,
-
-수업 일정 관리, 강의 리소스 제공, 학습 정리, 강사 피드백, 프로젝트 모집, AI 추천 기능을 하나의 플랫폼에 통합한 **AI 기반 차세대 교육 솔루션**이다.
-
-이 시스템은 학생, 강사, 멘토, 운영자 각각의 역할에 맞는 기능을 제공하며, 교육 현장에서 실제로 발생하는 정보 분산, 피드백 비효율, 프로젝트 참여 장벽, 진로 기반 학습 탐색의 어려움 등을 해결하는 것을 목표로 한다.
+- Do not commit real API keys or passwords.
+- Notion integration is intentionally deferred to a secure interface-first design.

@@ -1,0 +1,22 @@
+{
+  "rootTopbarLabel": "Root",
+  "studentTopbarLabel": "학생",
+  "profileSaveMessage": "회원정보가 저장되었습니다.",
+  "logoutModalTitle": "로그아웃",
+  "logoutModalBody": "로그아웃 하시겠습니까?",
+  "projectButtons": {
+    "board": {
+      "width": 124,
+      "height": 38,
+      "y": 78
+    },
+    "newPost": {
+      "width": 124,
+      "height": 38,
+      "y": 78
+    }
+  },
+  "notesEmptyTitle": "2026. 4. 13.에 작성된 노트가 없습니다.",
+  "koreaToday": "2026. 4. 13.",
+  "notesUsesKoreaToday": true
+}

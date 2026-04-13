@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: kiacms-postgres
+    restart: unless-stopped
+    ports:
+      - "${KIACMS_DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: ${KIACMS_DB_NAME:-kiacms}
+      POSTGRES_USER: ${KIACMS_DB_USER:-kiacms}
+      POSTGRES_PASSWORD: ${KIACMS_DB_PASSWORD:-change-me}
+    volumes:
+      - kiacms-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  kiacms-postgres-data:

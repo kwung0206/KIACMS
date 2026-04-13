@@ -1,0 +1,9 @@
+package com.kiacms.ai.enums;
+
+public enum AiFeatureType {
+    NOTE_SUMMARY,
+    CAREER_COURSE_RECOMMENDATION,
+    SIMILAR_PROJECT_RECOMMENDATION,
+    SITE_CHAT_ASSISTANT,
+    PROJECT_PLAN_ANALYSIS
+}

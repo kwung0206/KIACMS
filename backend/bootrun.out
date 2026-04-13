@@ -1,0 +1,48 @@
+> Task :compileJava UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :resolveMainClassName
+
+> Task :bootRun
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.0)
+
+2026-04-13T17:28:11.415+09:00  INFO 22748 --- [kiacms-backend] [           main] com.kiacms.KiacmsApplication             : Starting KiacmsApplication using Java 21.0.10 with PID 22748 (C:\Users\kgj01\Documents\KIACMS\backend\build\classes\java\main started by kgj01 in C:\Users\kgj01\Documents\KIACMS\backend)
+2026-04-13T17:28:11.417+09:00 DEBUG 22748 --- [kiacms-backend] [           main] com.kiacms.KiacmsApplication             : Running with Spring Boot v3.3.0, Spring v6.1.8
+2026-04-13T17:28:11.419+09:00  INFO 22748 --- [kiacms-backend] [           main] com.kiacms.KiacmsApplication             : No active profile set, falling back to 1 default profile: "local"
+2026-04-13T17:28:12.216+09:00  INFO 22748 --- [kiacms-backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-13T17:28:12.300+09:00  INFO 22748 --- [kiacms-backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 77 ms. Found 18 JPA repository interfaces.
+2026-04-13T17:28:12.980+09:00  INFO 22748 --- [kiacms-backend] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8085 (http)
+2026-04-13T17:28:12.989+09:00  INFO 22748 --- [kiacms-backend] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-13T17:28:12.989+09:00  INFO 22748 --- [kiacms-backend] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2026-04-13T17:28:13.039+09:00  INFO 22748 --- [kiacms-backend] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-04-13T17:28:13.040+09:00  INFO 22748 --- [kiacms-backend] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1578 ms
+2026-04-13T17:28:13.292+09:00  INFO 22748 --- [kiacms-backend] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-13T17:28:13.338+09:00  INFO 22748 --- [kiacms-backend] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-04-13T17:28:13.364+09:00  INFO 22748 --- [kiacms-backend] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-04-13T17:28:13.613+09:00  INFO 22748 --- [kiacms-backend] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-13T17:28:13.634+09:00  INFO 22748 --- [kiacms-backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-13T17:28:13.762+09:00  INFO 22748 --- [kiacms-backend] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@642c5bb3
+2026-04-13T17:28:13.764+09:00  INFO 22748 --- [kiacms-backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-13T17:28:13.790+09:00  WARN 22748 --- [kiacms-backend] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-13T17:28:14.915+09:00  INFO 22748 --- [kiacms-backend] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-13T17:28:15.238+09:00  INFO 22748 --- [kiacms-backend] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-13T17:28:15.621+09:00 DEBUG 22748 --- [kiacms-backend] [           main] c.k.g.security.JwtAuthenticationFilter   : Filter 'jwtAuthenticationFilter' configured for use
+2026-04-13T17:28:15.954+09:00  INFO 22748 --- [kiacms-backend] [           main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-13T17:28:15.956+09:00  WARN 22748 --- [kiacms-backend] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used for username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider.
+2026-04-13T17:28:16.521+09:00  INFO 22748 --- [kiacms-backend] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-04-13T17:28:16.592+09:00  INFO 22748 --- [kiacms-backend] [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@553d9329, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7a725c89, org.springframework.security.web.context.SecurityContextHolderFilter@3a973b5e, org.springframework.security.web.header.HeaderWriterFilter@2d170dac, org.springframework.web.filter.CorsFilter@13c147f8, org.springframework.security.web.authentication.logout.LogoutFilter@2eb6a77f, com.kiacms.global.security.JwtAuthenticationFilter@6419726f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@143abb21, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@11c95035, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5936e4ba, org.springframework.security.web.session.SessionManagementFilter@40cb19d5, org.springframework.security.web.access.ExceptionTranslationFilter@134ccb03, org.springframework.security.web.access.intercept.AuthorizationFilter@57753d41]
+2026-04-13T17:28:16.952+09:00  INFO 22748 --- [kiacms-backend] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8085 (http) with context path '/'
+2026-04-13T17:28:16.962+09:00  INFO 22748 --- [kiacms-backend] [           main] com.kiacms.KiacmsApplication             : Started KiacmsApplication in 5.92 seconds (process running for 6.212)
+2026-04-13T17:28:29.321+09:00  INFO 22748 --- [kiacms-backend] [nio-8085-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-13T17:28:29.321+09:00  INFO 22748 --- [kiacms-backend] [nio-8085-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-13T17:28:29.323+09:00  INFO 22748 --- [kiacms-backend] [nio-8085-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+
+> Task :bootRun FAILED
+4 actionable tasks: 2 executed, 2 up-to-date

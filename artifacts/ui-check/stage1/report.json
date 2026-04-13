@@ -1,0 +1,71 @@
+{
+  "accounts": {
+    "root": {
+      "topbar": "Root root"
+    },
+    "createdStudent": {
+      "topbar": "학생 검증학생4720"
+    },
+    "student": {
+      "topbar": "학생 student"
+    },
+    "teacher": {
+      "topbar": "강사 teacher"
+    },
+    "mentor": {
+      "topbar": "멘토 mentor"
+    }
+  },
+  "screenshots": {
+    "pending": "C:\\Users\\kgj01\\Documents\\KIACMS\\artifacts\\ui-check\\stage1\\pending-signup.png",
+    "rootPending": "C:\\Users\\kgj01\\Documents\\KIACMS\\artifacts\\ui-check\\stage1\\root-home-pending.png",
+    "rootCourses": "C:\\Users\\kgj01\\Documents\\KIACMS\\artifacts\\ui-check\\stage1\\root-courses.png",
+    "studentCalendar": "C:\\Users\\kgj01\\Documents\\KIACMS\\artifacts\\ui-check\\stage1\\student-calendar.png",
+    "projectBoard": "C:\\Users\\kgj01\\Documents\\KIACMS\\artifacts\\ui-check\\stage1\\projects-board-list-detail.png",
+    "studentApplications": "C:\\Users\\kgj01\\Documents\\KIACMS\\artifacts\\ui-check\\stage1\\student-applications-detail.png",
+    "notifications": "C:\\Users\\kgj01\\Documents\\KIACMS\\artifacts\\ui-check\\stage1\\notifications-page-owner.png",
+    "teacher": "C:\\Users\\kgj01\\Documents\\KIACMS\\artifacts\\ui-check\\stage1\\teacher-home.png",
+    "mentor": "C:\\Users\\kgj01\\Documents\\KIACMS\\artifacts\\ui-check\\stage1\\mentor-home.png"
+  },
+  "generated": {
+    "newStudentEmail": "stage1-20260413214720@kiacms.local",
+    "newStudentName": "검증학생4720",
+    "projectTitle": "1차 검증 프로젝트 20260413214720",
+    "koreaToday": {
+      "key": "2026-04-13",
+      "dayNumber": "13"
+    }
+  },
+  "pending": {
+    "title": "가입 신청이 접수되었습니다.",
+    "description": "가입 신청이 완료되었습니다. Root 관리자 승인 전까지는 주요 기능을 사용할 수 없습니다."
+  },
+  "rootCourses": {
+    "topbar": "Root root",
+    "pageTitle": "수업 일정 관리"
+  },
+  "createdProjectUrl": "http://localhost:5173/projects/f514cf1f-0cb2-4140-b4e4-f98bc5d3623d",
+  "studentCalendar": {
+    "selectedDay": "13",
+    "expectedDay": "13",
+    "matchesKoreaToday": true
+  },
+  "projectBoard": {
+    "selectedTitle": "1차 검증 프로젝트 20260413214720"
+  },
+  "applicationView": {
+    "detailTitle": "1차 검증 프로젝트 20260413214720",
+    "beforeDeleteCount": 2
+  },
+  "applicationUpdate": {
+    "successMessage": "지원서가 수정되었습니다."
+  },
+  "applicationDelete": {
+    "afterDeleteCount": 1
+  },
+  "notifications": {
+    "before": 2,
+    "after": 1,
+    "deleted": true
+  }
+}

@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: kiacms-backend
+  profiles:
+    default: local
+  jackson:
+    time-zone: UTC
+    default-property-inclusion: non_null
+
+server:
+  port: ${KIACMS_SERVER_PORT:8085}
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    root: INFO
+    com.kiacms: INFO
+
+app:
+  ai:
+    openai:
+      enabled: ${KIACMS_AI_ENABLED:true}
+      api-key: ${OPENAI_API_KEY:}
+      base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1}
+      model: ${OPENAI_MODEL:gpt-4o-mini}
+      timeout-seconds: ${OPENAI_TIMEOUT_SECONDS:30}
+      prompt-version: ${KIACMS_AI_PROMPT_VERSION:v1}
+  security:
+    jwt:
+      secret: ${KIACMS_JWT_SECRET:change-me-to-a-very-long-local-secret-key-at-least-32-chars}
+      issuer: ${KIACMS_JWT_ISSUER:kiacms}
+      access-token-validity-seconds: ${KIACMS_JWT_ACCESS_TOKEN_VALIDITY_SECONDS:3600}
+    cors:
+      allowed-origins:
+        - ${KIACMS_FRONTEND_ORIGIN:http://localhost:5173}
+  bootstrap:
+    root:
+      enabled: ${KIACMS_BOOTSTRAP_ROOT_ENABLED:false}
+      email: ${KIACMS_BOOTSTRAP_ROOT_EMAIL:}
+      password: ${KIACMS_BOOTSTRAP_ROOT_PASSWORD:}
+      name: ${KIACMS_BOOTSTRAP_ROOT_NAME:KIACMS Root}

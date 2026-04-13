@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.0.10:5432/kiacmsdb
+    username: kwung
+    password: ${KIACMS_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    open-in-view: false
+
+logging:
+  level:
+    com.kiacms: DEBUG
+
+app:
+  bootstrap:
+    root:
+      enabled: ${KIACMS_BOOTSTRAP_ROOT_ENABLED:false}
+      email: ${KIACMS_BOOTSTRAP_ROOT_EMAIL:root@kiacms.local}
+      password: ${KIACMS_BOOTSTRAP_ROOT_PASSWORD:Root1234!ChangeMe}
+      name: ${KIACMS_BOOTSTRAP_ROOT_NAME:Local Root}
